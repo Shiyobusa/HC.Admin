@@ -27,9 +27,9 @@ function login_check()
 	}
 }
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
-    // last request was more than 30 minutes ago
-    session_unset();     // unset $_SESSION variable for the run-time 
-    session_destroy();   // destroy session data in storage
+	// last request was more than 30 minutes ago
+	session_unset();     // unset $_SESSION variable for the run-time 
+	session_destroy();   // destroy session data in storage
 }
 
 
@@ -47,7 +47,7 @@ if (login_status() === true)
 	
 	if (isset($_GET['action'])) {
 		switch ($_GET['action']) {
-			case 'logouta':
+			case 'logout':
 				session_unset();
 				session_destroy();
 				break;
@@ -60,23 +60,37 @@ if (login_status() === true)
 			case 'restart':
 				$api->call("remotetoolkit.restartServer");
 				break;	
-			default:
-				header("Location:".$_SERVER["PHP_SELF"]);
-				break;
+
 		}
 	}
 
-	$smarty = new Smarty_app();
+	if (isset($_GET['site'])) {
+		switch ($_GET['site']) {
+			case 'home':
+				$smarty = new Smarty_app();
+					
+				$smarty->assign('zone','Home');
+				$smarty->assign('server_status',server_status());
+				if(isset($_SESSION['USER_ACCESS'])): $smarty->assign('username',$_SESSION['USER_ACCESS']); endif;
 
-	$smarty->assign('zone','Home');
-	$smarty->assign('server_status',server_status());
-	if(isset($_SESSION['USER_ACCESS'])): $smarty->assign('username',$_SESSION['USER_ACCESS']); endif;
+				$smarty->display('templates/home.tpl');
 
-	$smarty->display('templates/home.tpl');
+				$smarty->clearAllCache(); # REMOVE AFTER FINAL VERSION
+				$smarty->clear_all_cache();
+				$smarty->caching = false; # REMOVE AFTER FINAL VERSION
 
-	$smarty->clearAllCache(); # REMOVE AFTER FINAL VERSION
-	$smarty->clear_all_cache();
-	$smarty->caching = false; # REMOVE AFTER FINAL VERSION
+				break;
+			case 'add_user':
+			
+				break;
+			default:
+				header("Location:?site=home");
+				break;
+		}
+	}
+	else {
+		header("Location:?site");
+	}
 }
 elseif (login_status() === false)
 {

@@ -3,13 +3,11 @@
 <table class="header">
 <tr>
 <td>Welcome {$username}<a style="color:grey;" href="?action=logout"> (Logout)</a></td>
-
+{if $server_status === "online"}
 <td>Servidor <a style="color:green;">ONLINE</a></td>
-
+{elseif $server_status === "offline"}
 <td>Servidor <a style="color:red;">OFFLINE</a></td>
-
-<td>Servidor <a style="color:red;">OFFLINE</a></td>
-
+{/if}
 </tr>
 </table> 
 

@@ -75,10 +75,6 @@ if (login_status() === true)
 
 				$smarty->display('templates/home.tpl');
 
-				$smarty->clearAllCache(); # REMOVE AFTER FINAL VERSION
-				$smarty->clear_all_cache();
-				$smarty->caching = false; # REMOVE AFTER FINAL VERSION
-
 				break;
 			case 'add_user':
 			
@@ -103,8 +99,6 @@ elseif (login_status() === false)
 
 	$smarty->display('templates/login.tpl');
 
-	$smarty->clearAllCache(); # REMOVE AFTER FINAL VERSION
-	$smarty->caching = false; # REMOVE AFTER FINAL VERSION
 }
 
 ?>
